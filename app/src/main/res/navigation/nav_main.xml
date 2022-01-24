@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mapsFragment">
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="ru.netology.travel_in_russia_maps.MapsFragment"
+        android:label="MapsFragment" >
+        <action
+            android:id="@+id/action_mapsFragment_to_listOfPointsFragment"
+            app:destination="@id/listOfPointsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listOfPointsFragment"
+        android:name="ru.netology.travel_in_russia_maps.ListOfPointsFragment"
+        android:label="ListOfPointsFragment" >
+        <action
+            android:id="@+id/action_listOfPointsFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+    </fragment>
+</navigation>

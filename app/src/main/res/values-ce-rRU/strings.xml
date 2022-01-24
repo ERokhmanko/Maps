@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Карта путешествий по России</string>
+    <string name="empty_list">Список точек маршрута пуст. Создайте свой маркер.</string>
+    <string name="add_point">Добавить маркер</string>
+    <string name="tab_map">Карта</string>
+    <string name="tab_marked_places">Помеченные места</string>
+    <string name="maximum_length">Максимум 27 символов</string>
+
+</resources>
