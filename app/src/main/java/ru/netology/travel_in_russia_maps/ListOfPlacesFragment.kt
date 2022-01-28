@@ -7,24 +7,23 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import ru.netology.travel_in_russia_maps.adapter.PlaceCallback
 import ru.netology.travel_in_russia_maps.adapter.PlacesAdapter
-import ru.netology.travel_in_russia_maps.databinding.FragmentListOfPointsBinding
+import ru.netology.travel_in_russia_maps.databinding.FragmentListOfPlacesBinding
 import ru.netology.travel_in_russia_maps.dto.Place
 import ru.netology.travel_in_russia_maps.viewModel.PlaceViewModel
 
-class ListOfPointsFragment : Fragment() {
+class ListOfPlacesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentListOfPointsBinding.inflate(inflater, container, false)
+        val binding = FragmentListOfPlacesBinding.inflate(inflater, container, false)
 
 
-        val viewModel: PlaceViewModel by viewModels(
-            ownerProducer = ::requireParentFragment
-        )
+        val viewModel: PlaceViewModel by viewModels()
 
 
         val adapter = PlacesAdapter(object : PlaceCallback {
@@ -39,7 +38,6 @@ class ListOfPointsFragment : Fragment() {
 
         binding.list.adapter = adapter
 
-        //TODO переделать
         viewModel.data.observe(viewLifecycleOwner, { state ->
             val listComparison = adapter.itemCount < state.places.size
             adapter.submitList(state.places) {
@@ -50,7 +48,8 @@ class ListOfPointsFragment : Fragment() {
         })
 
         binding.newPoint.setOnClickListener {
-//            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment) //TODO
+            findNavController().navigate(R.id.action_listOfPointsFragment_to_newPlaceFragment)
+
         }
 
         return binding.root

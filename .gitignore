@@ -23,6 +23,7 @@ local.properties
 captures/
 .externalNativeBuild
 .cxx
+maps.properties
 
 ### NetBeans ###
 /nbproject/private/

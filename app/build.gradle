@@ -15,6 +15,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        if (rootProject.file("maps.properties").exists()){
+            properties.load(rootProject.file("maps.properties").newDataInputStream())
+        }
+        manifestPlaceholders.mapsApiKey = properties.getProperty("MAPS_API_KEY", "")
     }
 
     buildTypes {
@@ -51,6 +57,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0" //для запуска корутин, чтобы не блокировало основной thread
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'// для хранения данных
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"// для подключения вьюМодели во фрагменте и навигации в нем
+
+    implementation "com.google.android.gms:play-services-location:19.0.1" // для использования карт, определение геолокации
+    implementation "com.google.android.gms:play-services-maps:18.0.2" // для использования карт
+    implementation "com.google.maps.android:maps-ktx:3.3.0" // для использования карт
+    implementation "com.google.maps.android:maps-utils-ktx:3.3.0" // для использования карт
 
 
     testImplementation 'junit:junit:4.+'

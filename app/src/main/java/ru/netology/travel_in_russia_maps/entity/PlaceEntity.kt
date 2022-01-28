@@ -11,8 +11,8 @@ data class PlaceEntity(
     val avatarPlace: String,
     val name: String,
     val description: String,
-    val latitude: Float,
-    val longitude: Float
+    val latitude: Double,
+    val longitude: Double
 
 ) {
     fun toDto() =

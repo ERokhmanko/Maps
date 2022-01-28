@@ -18,8 +18,8 @@ private val emptyPlace = Place(
     avatarPlace = "",
     name = "",
     description = "",
-    latitude = 0F,
-    longitude = 0F
+    latitude = 0.0,
+    longitude = 0.0
 )
 
 class PlaceViewModel(application: Application) : AndroidViewModel(application) {

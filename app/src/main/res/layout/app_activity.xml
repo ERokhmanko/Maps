@@ -10,6 +10,7 @@
 <!--        android:name="com.google.android.gms.maps.SupportMapFragment"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="50dp"-->
 <!--        />-->
 
     <androidx.fragment.app.FragmentContainerView
@@ -19,31 +20,52 @@
         android:layout_height="match_parent"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_main"
+        android:layout_marginTop="50dp"
         />
 
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/mapTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tab_map"
-            app:tabMode="fixed"
-            />
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/placesTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tab_marked_places"
-            app:tabMode="fixed"/>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
 
-    </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!--    <com.google.android.material.tabs.TabLayout-->
+    <!--        android:id="@+id/tabLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content">-->
+
+    <!--        <com.google.android.material.tabs.TabItem-->
+    <!--            android:id="@+id/mapTab"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/tab_map"-->
+    <!--            app:tabMode="fixed"-->
+    <!--            />-->
+
+    <!--        <com.google.android.material.tabs.TabItem-->
+    <!--            android:id="@+id/placesTab"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/tab_marked_places"-->
+    <!--            app:tabMode="fixed"/>-->
+
+    <!--    </com.google.android.material.tabs.TabLayout>-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
