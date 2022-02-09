@@ -9,5 +9,12 @@
     <string name="menu_remove">Удалить</string>
     <string name="menu_edit">Редактировать</string>
     <string name="myLocation">Вы здесь</string>
+    <string name="error_empty_name">Поле с именем не может быть пустым</string>
+    <string name="error_empty_coordinates">Поле с координатамии не может быть пустым</string>
+    <string name="save">Сохарнить</string>
+    <string name="name">Краткое имя места</string>
+    <string name="description">Описание (по необходимости)</string>
+    <string name="locationСoordinates">Введите координаты или выберите на карте</string>
+    <string name="access_denied">Приложение не сможет отображать текущую локацию</string>
 
 </resources>

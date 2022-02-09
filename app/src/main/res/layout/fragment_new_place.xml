@@ -22,7 +22,9 @@
             android:id="@+id/nameFieldEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"/>
+            android:backgroundTint="@color/white"
+            android:maxLength="20"
+            android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,11 +62,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="locationСoordinates"
+        app:constraint_referenced_ids="locationCoordinates"
         />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/locationСoordinates"
+        android:id="@+id/locationCoordinates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_end_start_Field"
@@ -76,6 +78,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/locationCoordinatesEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"/>
@@ -90,7 +93,7 @@
         style="@style/Widget.AppCompat.ElementsMarkedPlacesCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrierButtom"
-        app:layout_constraintStart_toEndOf="@id/locationСoordinates"
+        app:layout_constraintStart_toEndOf="@id/locationCoordinates"
         app:icon="@drawable/ic_baseline_ads_click_24"
         android:layout_marginEnd="@dimen/margin_end_start_Field"
 
@@ -105,7 +108,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationСoordinates" />
+        app:layout_constraintTop_toBottomOf="@id/locationCoordinates" />
 
 
 

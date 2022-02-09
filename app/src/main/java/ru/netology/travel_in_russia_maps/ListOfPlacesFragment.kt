@@ -22,8 +22,11 @@ class ListOfPlacesFragment : Fragment() {
     ): View {
         val binding = FragmentListOfPlacesBinding.inflate(inflater, container, false)
 
+        val bundle = Bundle()
 
-        val viewModel: PlaceViewModel by viewModels()
+        val viewModel: PlaceViewModel by viewModels(
+            ownerProducer = ::requireParentFragment
+        )
 
 
         val adapter = PlacesAdapter(object : PlaceCallback {
@@ -33,19 +36,37 @@ class ListOfPlacesFragment : Fragment() {
 
             override fun edit(place: Place) {
                viewModel.edit(place)
+                bundle.putString("name", place.name)
+                bundle.putString("description", place.description)
+//                bundle.putDouble("latitude", place.latitude)
+//                bundle.putDouble("longitude", place.longitude)
+                findNavController().navigate(R.id.action_listOfPointsFragment_to_newPlaceFragment, bundle)
+            }
+
+            override fun onPlace(place: Place) {
+                val id = place.id
+                bundle.putLong("id", id)
+
+                findNavController().navigate(R.id.action_listOfPointsFragment_to_mapsFragment, bundle)
+            }
+
+            override fun onVisited(place: Place) {
+                if (!place.visited) viewModel.visited(place) else viewModel.notVisited(place)
             }
         })
 
         binding.list.adapter = adapter
 
-        viewModel.data.observe(viewLifecycleOwner, { state ->
+
+
+        viewModel.data.observe(viewLifecycleOwner) { state ->
             val listComparison = adapter.itemCount < state.places.size
             adapter.submitList(state.places) {
                 if (listComparison) binding.list.scrollToPosition(0)
             }
 
             binding.emptyText.isVisible = state.empty
-        })
+        }
 
         binding.newPoint.setOnClickListener {
             findNavController().navigate(R.id.action_listOfPointsFragment_to_newPlaceFragment)

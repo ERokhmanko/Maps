@@ -13,5 +13,8 @@
     <string name="description">place description (optional)</string>
     <string name="locationСoordinates">enter the coordinates or select on the map</string>
     <string name="save">Save</string>
+    <string name="error_empty_name">Name cannot be empty</string>
+    <string name="error_empty_coordinates">Coordinates cannot be empty</string>
+    <string name="access_denied">The app will not be able to display the current location</string>
 
 </resources>

@@ -2,12 +2,13 @@ package ru.netology.travel_in_russia_maps.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import ru.netology.travel_in_russia_maps.entity.DraftEntity
 import ru.netology.travel_in_russia_maps.entity.PlaceEntity
 
 @Dao
 interface PlaceDao {
 
-    @Query("SELECT * FROM PlaceEntity ORDER BY id")
+    @Query("SELECT * FROM PlaceEntity ORDER BY visited")
     fun getAll(): Flow<List<PlaceEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -26,4 +27,48 @@ interface PlaceDao {
     suspend fun removeById(id: Long)
 
 
+    @Query("DELETE FROM DraftEntity")
+    suspend fun deleteDraft()
+
+    @Insert
+    suspend fun insertDraft(draft: DraftEntity?)
+
+    suspend fun saveDraft(name: String?, description: String) {
+        if (name == null) {
+            deleteDraft()
+        } else {
+            val id = 0L
+            val draftEntity = DraftEntity(id = id, name = name, description = description)
+            if (draftEntity.id == id) {
+                deleteDraft()
+                insertDraft(draftEntity)
+            } else {
+                insertDraft(draftEntity)
+            }
+        }
+    }
+
+    @Query(
+        """
+           UPDATE PlaceEntity SET
+               visited = 1
+           WHERE id = :id AND visited = 0;
+        """
+    )
+    fun visited(id: Long)
+
+    @Query(
+        """
+           UPDATE PlaceEntity SET
+               visited = 0
+           WHERE id = :id AND visited = 1;
+        """
+    )
+    suspend fun notVisited(id: Long)
+
+    @Query("SELECT name FROM DraftEntity ")
+    suspend fun getDraftName(): String?
+
+    @Query("SELECT description FROM DraftEntity ")
+    suspend fun getDraftDescription(): String?
 }

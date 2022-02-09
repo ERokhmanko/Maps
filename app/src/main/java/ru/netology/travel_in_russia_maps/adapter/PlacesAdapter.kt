@@ -13,34 +13,45 @@ import ru.netology.travel_in_russia_maps.dto.Place
 interface PlaceCallback {
     fun remove(place: Place)
     fun edit(place: Place)
+    fun onPlace(place: Place)
+    fun onVisited(place: Place)
 }
 
 class PlacesAdapter(private val placeCallback: PlaceCallback) :
     ListAdapter<Place, PlaceViewHolder>(PlacesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
-        val binding = CardMarkedPlacesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            CardMarkedPlacesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PlaceViewHolder(binding, placeCallback)
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val post = getItem(position)
-        holder.bind(post)
+        val place = getItem(position)
+        holder.bind(place)
     }
 
 }
 
 class PlaceViewHolder(
     private val binding: CardMarkedPlacesBinding,
-    private val placeCallback:PlaceCallback
+    private val placeCallback: PlaceCallback
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(place: Place) {
 
         with(binding) {
-//            Glide.with(avatarPlace)//TODO
             namePlace.text = place.name
             description.text = place.description
+            checkBox.isChecked = place.visited
+
+//            checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+//                if (!isChecked) placeCallback.onVisited(place)
+//            }
+
+            checkBox.setOnClickListener {
+                placeCallback.onVisited(place)
+            }
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -61,7 +72,10 @@ class PlaceViewHolder(
                 }.show()
             }
 
+            group.setOnClickListener { placeCallback.onPlace(place) }
+
         }
+
     }
 }
 

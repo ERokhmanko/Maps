@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import ru.netology.travel_in_russia_maps.dao.PlaceDao
+import ru.netology.travel_in_russia_maps.entity.DraftEntity
 import ru.netology.travel_in_russia_maps.entity.PlaceEntity
 
-@Database(entities = [PlaceEntity::class], version = 1, exportSchema = false)
+@Database(entities = [PlaceEntity::class, DraftEntity::class], version = 1, exportSchema = false)
 abstract class AppDb : RoomDatabase() {
     abstract fun placeDao(): PlaceDao
 

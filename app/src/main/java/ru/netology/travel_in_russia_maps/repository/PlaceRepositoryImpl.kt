@@ -36,6 +36,56 @@ class PlaceRepositoryImpl(private val placeDao: PlaceDao) : PlaceRepository {
         }
     }
 
+    override suspend fun saveDraft(name: String?, description: String) {
+        try {
+            placeDao.saveDraft(name, description)
+        } catch (e: SQLException) {
+            throw DbError
+        }catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun getDraftName(): String? =
+        try {
+            placeDao.getDraftName()
+        } catch (e: SQLException) {
+            throw DbError
+        }catch (e: Exception) {
+            throw UnknownError
+        }
+
+
+    override suspend fun getDraftDescription(): String? =
+        try {
+            placeDao.getDraftDescription()
+        } catch (e: SQLException) {
+            throw DbError
+        }catch (e: Exception) {
+            throw UnknownError
+        }
+
+    override suspend fun visited(id: Long) {
+        try {
+            placeDao.visited(id)
+        } catch (e: SQLException) {
+            throw DbError
+        }catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun notVisited(id: Long) {
+        try {
+            placeDao.notVisited(id)
+        } catch (e: SQLException) {
+            throw DbError
+        }catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+
     override suspend fun save(place: Place) {
         try {
             placeDao.insert(PlaceEntity.fromDto(place))

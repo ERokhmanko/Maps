@@ -8,7 +8,7 @@ import ru.netology.travel_in_russia_maps.dto.Place
 data class PlaceEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val avatarPlace: String,
+    val visited: Boolean,
     val name: String,
     val description: String,
     val latitude: Double,
@@ -17,14 +17,14 @@ data class PlaceEntity(
 ) {
     fun toDto() =
         Place(
-            id, avatarPlace, name, description, latitude, longitude
+            id, visited, name, description, latitude, longitude
         )
 
     companion object {
         fun fromDto(place: Place) =
             PlaceEntity(
                 place.id,
-                place.avatarPlace,
+                place.visited,
                 place.name,
                 place.description,
                 place.latitude,
@@ -36,3 +36,11 @@ data class PlaceEntity(
 
 fun List<PlaceEntity>.toDto() = map(PlaceEntity::toDto)
 fun List<Place>.toEntity() = map(PlaceEntity::fromDto)
+
+@Entity
+data class DraftEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long,
+    val name: String,
+    val description: String
+)

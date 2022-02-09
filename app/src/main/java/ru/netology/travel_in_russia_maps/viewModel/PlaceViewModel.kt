@@ -15,7 +15,7 @@ import ru.netology.travel_in_russia_maps.utils.SingleLiveEvent
 
 private val emptyPlace = Place(
     id = 0,
-    avatarPlace = "",
+    visited = false,
     name = "",
     description = "",
     latitude = 0.0,
@@ -77,22 +77,51 @@ class PlaceViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    //TODO посмотреть что тут
-    fun changeDescription(description: String, name: String) {
-        try {
-            edited.value?.let {
-                viewModelScope.launch {
-                    repository.update(it)
-                    _dataState.value = FeedModelState()
-                }
+    fun changeContent(name: String, description: String, local: String) {
+
+        val coordinates = local.split(";")
+        val latitude = coordinates[0].toDouble()
+        val longitude = coordinates[1].toDouble()
+        edited.value?.let {
+            val textName = name.trim()
+            val textDescription = description.trim()
+            if (it.name != textName ||
+                it.description != textDescription ||
+                it.latitude != latitude ||
+                longitude != longitude
+            ) {
+                edited.value = it.copy(
+                    name = textName,
+                    description = textDescription,
+                    latitude = latitude,
+                    longitude = longitude
+                )
             }
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
         }
     }
 
     fun edit(place: Place?) {
         edited.value = place
+    }
+
+    fun visited(place: Place)=viewModelScope.launch {
+        try {
+            repository.visited(place.id)
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value =
+                FeedModelState(error = true)
+        }
+    }
+
+    fun notVisited(place: Place)=viewModelScope.launch {
+        try {
+            repository.notVisited(place.id)
+            _dataState.value = FeedModelState()
+        } catch (e: Exception) {
+            _dataState.value =
+                FeedModelState(error = true)
+        }
     }
 
     fun removeById(id: Long) = viewModelScope.launch {
@@ -103,5 +132,22 @@ class PlaceViewModel(application: Application) : AndroidViewModel(application) {
             _dataState.value =
                 FeedModelState(error = true)
         }
+    }
+
+    fun saveDraft(name: String?, description: String) =
+        viewModelScope.launch { repository.saveDraft(name, description) }
+
+
+    fun getDraftName(): String? {
+        var name: String? = null
+        viewModelScope.launch { name = repository.getDraftName()
+        }
+        return name
+    }
+
+    fun getDraftDescription(): String? {
+        var description: String? = null
+        viewModelScope.launch { description = repository.getDraftDescription() }
+        return description
     }
 }
