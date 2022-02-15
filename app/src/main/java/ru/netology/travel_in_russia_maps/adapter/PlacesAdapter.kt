@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.netology.travel_in_russia_maps.R
 import ru.netology.travel_in_russia_maps.databinding.CardMarkedPlacesBinding
 import ru.netology.travel_in_russia_maps.dto.Place
+import ru.netology.travel_in_russia_maps.utils.addAllOnClickListener
 
 interface PlaceCallback {
     fun remove(place: Place)
@@ -45,10 +46,6 @@ class PlaceViewHolder(
             description.text = place.description
             checkBox.isChecked = place.visited
 
-//            checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-//                if (!isChecked) placeCallback.onVisited(place)
-//            }
-
             checkBox.setOnClickListener {
                 placeCallback.onVisited(place)
             }
@@ -72,7 +69,7 @@ class PlaceViewHolder(
                 }.show()
             }
 
-            group.setOnClickListener { placeCallback.onPlace(place) }
+            group.addAllOnClickListener { placeCallback.onPlace(place) }
 
         }
 

@@ -1,6 +1,9 @@
 package ru.netology.travel_in_russia_maps.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import ru.netology.travel_in_russia_maps.entity.DraftEntity
 import ru.netology.travel_in_russia_maps.entity.PlaceEntity
@@ -33,8 +36,8 @@ interface PlaceDao {
     @Insert
     suspend fun insertDraft(draft: DraftEntity?)
 
-    suspend fun saveDraft(name: String?, description: String) {
-        if (name == null) {
+    suspend fun saveDraft(name: String?, description: String?) {
+        if (name == null && description == null) {
             deleteDraft()
         } else {
             val id = 0L
@@ -55,7 +58,7 @@ interface PlaceDao {
            WHERE id = :id AND visited = 0;
         """
     )
-    fun visited(id: Long)
+    suspend fun visited(id: Long)
 
     @Query(
         """

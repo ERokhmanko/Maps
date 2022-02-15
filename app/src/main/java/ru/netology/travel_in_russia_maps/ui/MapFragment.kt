@@ -1,4 +1,4 @@
-package ru.netology.travel_in_russia_maps
+package ru.netology.travel_in_russia_maps.ui
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -22,9 +24,8 @@ import com.google.maps.android.ktx.awaitAnimateCamera
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.model.cameraPosition
 import com.google.maps.android.ktx.utils.collection.addMarker
+import ru.netology.travel_in_russia_maps.R
 import ru.netology.travel_in_russia_maps.databinding.FragmentMapBinding
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.fragment.app.viewModels
 import ru.netology.travel_in_russia_maps.dto.Place
 import ru.netology.travel_in_russia_maps.utils.icon
 import ru.netology.travel_in_russia_maps.viewModel.PlaceViewModel
@@ -55,7 +56,7 @@ class MapFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentMapBinding.inflate(inflater, container, false)
 
         binding.list.setOnClickListener {
@@ -88,61 +89,60 @@ class MapFragment : Fragment() {
                 }
             }
 
-
-            when {
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    googleMap.apply {
-                        isMyLocationEnabled = true
-                        uiSettings.isMyLocationButtonEnabled = true
-                    }
-
-                    fusedLocationClient =
-                        LocationServices.getFusedLocationProviderClient(requireActivity())
-
-                    val id = arguments?.getLong("id")
-                    var showPlace: Place? = null
-
-                    viewModel.data.observe(viewLifecycleOwner) { feedModel ->
-                        feedModel.places.map { place ->
-                            if (place.id == id) {
-                                showPlace = place
-                            }
+            while (true) {
+                when {
+                    ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED -> {
+                        googleMap.apply {
+                            isMyLocationEnabled = true
+                            uiSettings.isMyLocationButtonEnabled = true
                         }
-                    }
 
-                    if (showPlace?.id == null) {
-                        fusedLocationClient.lastLocation.addOnSuccessListener {
-                            lifecycle.coroutineScope.launchWhenCreated {
-                                googleMap.awaitAnimateCamera(
-                                    CameraUpdateFactory.newCameraPosition(
-                                        cameraPosition {
-                                            target(LatLng(it.latitude, it.longitude))
-                                            zoom(30F)
-                                        }
-                                    ))
-                            }
+                        fusedLocationClient =
+                            LocationServices.getFusedLocationProviderClient(requireActivity())
 
-                        }
-                    } else{
-                        googleMap.awaitAnimateCamera(
-                            CameraUpdateFactory.newCameraPosition(
-                                cameraPosition {
-                                    target(LatLng(showPlace!!.latitude, showPlace!!.longitude))
-                                    zoom(30F)
+                        val id = arguments?.getLong("id")
+                        var showPlace: Place? = null
+
+                        viewModel.data.observe(viewLifecycleOwner) { feedModel ->
+                            feedModel.places.map { place ->
+                                if (place.id == id) {
+                                    showPlace = place
                                 }
-                            ))
-                    }
+                            }
+                        }
 
-                }
-                shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                    // TODO: show rationale dialog
-                }
-                else -> {
-                    requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    //TODO должен сделать так, чтобы после разрешения заново прошло when
+                        if (showPlace?.id == null) {
+                            fusedLocationClient.lastLocation.addOnSuccessListener {
+                                lifecycle.coroutineScope.launchWhenCreated {
+                                    googleMap.awaitAnimateCamera(
+                                        CameraUpdateFactory.newCameraPosition(
+                                            cameraPosition {
+                                                target(LatLng(it.latitude, it.longitude))
+                                                zoom(30F)
+                                            }
+                                        ))
+                                }
+                            }
+                        } else {
+                            googleMap.awaitAnimateCamera(
+                                CameraUpdateFactory.newCameraPosition(
+                                    cameraPosition {
+                                        target(LatLng(showPlace!!.latitude, showPlace!!.longitude))
+                                        zoom(30F)
+                                    }
+                                ))
+                        }
+                        break
+                    }
+                    shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                        // TODO: show rationale dialog
+                    }
+                    else -> {
+                        requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    }
                 }
             }
 
@@ -153,21 +153,29 @@ class MapFragment : Fragment() {
                 bundle.putDouble("latitude", latitude)
                 bundle.putDouble("longitude", longitude)
 
-                //реализация добавления маркеров
+                findNavController().navigate(R.id.action_mapsFragment_to_newPlaceFragment, bundle)
+
+            }
+
+            viewModel.data.observe(viewLifecycleOwner) { feedModel ->
                 val markerManager = MarkerManager(googleMap)
                 markerManager.newCollection().apply {
-                    addMarker {
-                        position(LatLng(latitude, longitude))
-                        icon(getDrawable(requireContext(), R.drawable.ic_baseline_location_on_24)!!)
-
+                    feedModel.places.forEach { place ->
+                        addMarker {
+                            position(LatLng(place.latitude, place.longitude))
+                            icon(
+                                getDrawable(
+                                    requireContext(),
+                                    R.drawable.ic_baseline_location_on_24
+                                )!!
+                            )
+                            title(place.name)
+                        }
                     }
                 }
-                findNavController().navigate(R.id.action_mapsFragment_to_newPlaceFragment, bundle)
 
             }
 
         }
     }
-
-
 }

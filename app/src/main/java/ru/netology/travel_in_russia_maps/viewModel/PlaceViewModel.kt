@@ -68,6 +68,7 @@ class PlaceViewModel(application: Application) : AndroidViewModel(application) {
             viewModelScope.launch {
                 try {
                     repository.save(it)
+                    repository.saveDraft(null, null)
                     _dataState.value = FeedModelState()
                 } catch (e: Exception) {
                     _dataState.value = FeedModelState(error = true)
@@ -104,7 +105,7 @@ class PlaceViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = place
     }
 
-    fun visited(place: Place)=viewModelScope.launch {
+    fun visited(place: Place) = viewModelScope.launch {
         try {
             repository.visited(place.id)
             _dataState.value = FeedModelState()
@@ -114,7 +115,7 @@ class PlaceViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun notVisited(place: Place)=viewModelScope.launch {
+    fun notVisited(place: Place) = viewModelScope.launch {
         try {
             repository.notVisited(place.id)
             _dataState.value = FeedModelState()
@@ -138,16 +139,8 @@ class PlaceViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch { repository.saveDraft(name, description) }
 
 
-    fun getDraftName(): String? {
-        var name: String? = null
-        viewModelScope.launch { name = repository.getDraftName()
-        }
-        return name
-    }
+    suspend fun getDraftName(): String? = repository.getDraftName()
 
-    fun getDraftDescription(): String? {
-        var description: String? = null
-        viewModelScope.launch { description = repository.getDraftDescription() }
-        return description
-    }
+    suspend fun getDraftDescription(): String? = repository.getDraftDescription()
+
 }

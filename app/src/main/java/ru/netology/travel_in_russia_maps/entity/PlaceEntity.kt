@@ -35,12 +35,12 @@ data class PlaceEntity(
 }
 
 fun List<PlaceEntity>.toDto() = map(PlaceEntity::toDto)
-fun List<Place>.toEntity() = map(PlaceEntity::fromDto)
+
 
 @Entity
 data class DraftEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val name: String,
-    val description: String
+    val name: String?,
+    val description: String?
 )

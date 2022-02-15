@@ -1,14 +1,15 @@
 package ru.netology.travel_in_russia_maps.repository
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import ru.netology.travel_in_russia_maps.dao.PlaceDao
 import ru.netology.travel_in_russia_maps.dto.Place
 import ru.netology.travel_in_russia_maps.entity.PlaceEntity
 import ru.netology.travel_in_russia_maps.entity.toDto
 import ru.netology.travel_in_russia_maps.error.DbError
 import ru.netology.travel_in_russia_maps.error.UnknownError
-import java.io.IOException
 import java.sql.SQLException
 
 
@@ -21,7 +22,7 @@ class PlaceRepositoryImpl(private val placeDao: PlaceDao) : PlaceRepository {
             placeDao.getAll()
         } catch (e: SQLException) {
             throw DbError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw UnknownError
         }
     }
@@ -31,17 +32,17 @@ class PlaceRepositoryImpl(private val placeDao: PlaceDao) : PlaceRepository {
             placeDao.update(place.id, place.description, place.name)
         } catch (e: SQLException) {
             throw DbError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw UnknownError
         }
     }
 
-    override suspend fun saveDraft(name: String?, description: String) {
+    override suspend fun saveDraft(name: String?, description: String?) {
         try {
             placeDao.saveDraft(name, description)
         } catch (e: SQLException) {
             throw DbError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw UnknownError
         }
     }
@@ -51,7 +52,7 @@ class PlaceRepositoryImpl(private val placeDao: PlaceDao) : PlaceRepository {
             placeDao.getDraftName()
         } catch (e: SQLException) {
             throw DbError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw UnknownError
         }
 
@@ -61,7 +62,7 @@ class PlaceRepositoryImpl(private val placeDao: PlaceDao) : PlaceRepository {
             placeDao.getDraftDescription()
         } catch (e: SQLException) {
             throw DbError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw UnknownError
         }
 
@@ -70,7 +71,7 @@ class PlaceRepositoryImpl(private val placeDao: PlaceDao) : PlaceRepository {
             placeDao.visited(id)
         } catch (e: SQLException) {
             throw DbError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw UnknownError
         }
     }
@@ -80,7 +81,7 @@ class PlaceRepositoryImpl(private val placeDao: PlaceDao) : PlaceRepository {
             placeDao.notVisited(id)
         } catch (e: SQLException) {
             throw DbError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw UnknownError
         }
     }
@@ -91,7 +92,7 @@ class PlaceRepositoryImpl(private val placeDao: PlaceDao) : PlaceRepository {
             placeDao.insert(PlaceEntity.fromDto(place))
         } catch (e: SQLException) {
             throw DbError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw UnknownError
         }
     }
@@ -101,7 +102,7 @@ class PlaceRepositoryImpl(private val placeDao: PlaceDao) : PlaceRepository {
             placeDao.removeById(id)
         } catch (e: SQLException) {
             throw DbError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw UnknownError
         }
     }

@@ -1,11 +1,10 @@
 package ru.netology.travel_in_russia_maps.error
 
-import java.io.IOException
 import java.sql.SQLException
 
-sealed class AppError(message: String) : Exception(message){
-    companion object{
-        fun from(e: Throwable) = when(e){
+sealed class AppError(message: String) : Exception(message) {
+    companion object {
+        fun from(e: Throwable) = when (e) {
             is SQLException -> DbError
             else -> UnknownError
         }

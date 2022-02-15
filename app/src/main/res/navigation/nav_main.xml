@@ -6,7 +6,7 @@
     app:startDestination="@id/mapsFragment">
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="ru.netology.travel_in_russia_maps.MapFragment"
+        android:name="ru.netology.travel_in_russia_maps.ui.MapFragment"
         android:label="MapsFragment" >
         <action
             android:id="@+id/action_mapsFragment_to_listOfPointsFragment"
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/listOfPointsFragment"
-        android:name="ru.netology.travel_in_russia_maps.ListOfPlacesFragment"
+        android:name="ru.netology.travel_in_russia_maps.ui.ListOfPlacesFragment"
         android:label="ListOfPointsFragment" >
         <action
             android:id="@+id/action_listOfPointsFragment_to_mapsFragment"
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/newPlaceFragment"
-        android:name="ru.netology.travel_in_russia_maps.NewPlaceFragment"
+        android:name="ru.netology.travel_in_russia_maps.ui.NewPlaceFragment"
         android:label="fragment_new_place"
         tools:layout="@layout/fragment_new_place" >
         <action
@@ -40,6 +40,6 @@
     </fragment>
     <activity
         android:id="@+id/appActivity"
-        android:name="ru.netology.travel_in_russia_maps.AppActivity"
+        android:name="ru.netology.travel_in_russia_maps.ui.AppActivity"
         android:label="AppActivity" />
 </navigation>

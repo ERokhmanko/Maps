@@ -1,12 +1,13 @@
-package ru.netology.travel_in_russia_maps
+package ru.netology.travel_in_russia_maps.ui
 
 import android.os.Bundle
 import android.view.*
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import ru.netology.travel_in_russia_maps.R
 import ru.netology.travel_in_russia_maps.databinding.FragmentNewPlaceBinding
 
 import ru.netology.travel_in_russia_maps.viewModel.PlaceViewModel
@@ -18,7 +19,7 @@ class NewPlaceFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding = FragmentNewPlaceBinding.inflate(inflater, container, false)
 
@@ -42,10 +43,10 @@ class NewPlaceFragment : Fragment() {
         binding.descriptionFieldEdit.setText(description)
         binding.locationCoordinatesEdit.setText(local)
 
-        viewModel.getDraftName()?.let(binding.nameFieldEdit::setText)
-        viewModel.getDraftDescription()?.let(binding.descriptionFieldEdit::setText)
-
-
+        lifecycleScope.launchWhenCreated {
+            viewModel.getDraftName()?.let(binding.nameFieldEdit::setText)
+            viewModel.getDraftDescription()?.let(binding.descriptionFieldEdit::setText)
+        }
 
         binding.nameFieldEdit.requestFocus()
 
@@ -60,19 +61,19 @@ class NewPlaceFragment : Fragment() {
 
         binding.save.setOnClickListener {
 
-            val name = binding.nameFieldEdit.text.toString()
-            val local = binding.locationCoordinatesEdit.text.toString()
-            val description = binding.descriptionFieldEdit.text.toString()
+            val nameNewPlace = binding.nameFieldEdit.text.toString()
+            val localNewPlace = binding.locationCoordinatesEdit.text.toString()
+            val descriptionNewPlace = binding.descriptionFieldEdit.text.toString()
 
             when {
-                (name.isEmpty()) -> {
+                (nameNewPlace.isEmpty()) -> {
                     Snackbar.make(
                         binding.root,
                         R.string.error_empty_name,
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
-                (local.isEmpty()) -> {
+                (localNewPlace.isEmpty()) -> {
                     Snackbar.make(
                         binding.root,
                         R.string.error_empty_coordinates,
@@ -80,7 +81,7 @@ class NewPlaceFragment : Fragment() {
                     ).show()
                 }
                 else -> {
-                    viewModel.changeContent(name, description, local)
+                    viewModel.changeContent(nameNewPlace, descriptionNewPlace, localNewPlace)
                     viewModel.save()
                     findNavController().navigate(R.id.action_newPlaceFragment_to_listOfPointsFragment)
                 }
