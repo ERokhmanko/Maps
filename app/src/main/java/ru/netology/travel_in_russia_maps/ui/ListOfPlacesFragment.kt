@@ -39,8 +39,8 @@ class ListOfPlacesFragment : Fragment() {
                 viewModel.edit(place)
                 bundle.putString("name", place.name)
                 bundle.putString("description", place.description)
-                bundle.putDouble("latitude", place.latitude)
-                bundle.putDouble("longitude", place.longitude)
+                place.latitude?.let { bundle.putDouble("latitude", it) }
+                place.longitude?.let { bundle.putDouble("longitude", it) }
                 findNavController().navigate(
                     R.id.action_listOfPointsFragment_to_newPlaceFragment,
                     bundle

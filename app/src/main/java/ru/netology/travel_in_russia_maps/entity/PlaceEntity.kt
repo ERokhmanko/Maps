@@ -11,8 +11,8 @@ data class PlaceEntity(
     val visited: Boolean,
     val name: String,
     val description: String,
-    val latitude: Double,
-    val longitude: Double
+    val latitude: Double?,
+    val longitude: Double?
 
 ) {
     fun toDto() =

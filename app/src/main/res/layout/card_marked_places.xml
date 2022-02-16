@@ -79,7 +79,7 @@
         android:id="@+id/group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:constraint_referenced_ids="name_place, description, checkBox" />
+        app:constraint_referenced_ids="name_place, description" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

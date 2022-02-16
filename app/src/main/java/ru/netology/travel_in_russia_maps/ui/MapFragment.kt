@@ -130,7 +130,12 @@ class MapFragment : Fragment() {
                             googleMap.awaitAnimateCamera(
                                 CameraUpdateFactory.newCameraPosition(
                                     cameraPosition {
-                                        target(LatLng(showPlace!!.latitude, showPlace!!.longitude))
+                                        showPlace!!.latitude?.let { showPlace!!.longitude?.let { it1 ->
+                                            LatLng(it,
+                                                it1
+                                            )
+                                        } }
+                                            ?.let { target(it) }
                                         zoom(30F)
                                     }
                                 ))
@@ -162,7 +167,8 @@ class MapFragment : Fragment() {
                 markerManager.newCollection().apply {
                     feedModel.places.forEach { place ->
                         addMarker {
-                            position(LatLng(place.latitude, place.longitude))
+                            place.latitude?.let { place.longitude?.let { it1 -> LatLng(it, it1) } }
+                                ?.let { position(it) }
                             icon(
                                 getDrawable(
                                     requireContext(),

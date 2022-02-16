@@ -9,11 +9,15 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.travel_in_russia_maps.R
 import ru.netology.travel_in_russia_maps.databinding.FragmentNewPlaceBinding
+import ru.netology.travel_in_russia_maps.dto.Place
 
 import ru.netology.travel_in_russia_maps.viewModel.PlaceViewModel
 
 class NewPlaceFragment : Fragment() {
 
+   private val viewModel: PlaceViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,10 +26,6 @@ class NewPlaceFragment : Fragment() {
     ): View {
 
         val binding = FragmentNewPlaceBinding.inflate(inflater, container, false)
-
-        val viewModel: PlaceViewModel by viewModels(
-            ownerProducer = ::requireParentFragment
-        )
 
         val description = arguments?.getString("description")
         val name = arguments?.getString("name")
@@ -89,6 +89,11 @@ class NewPlaceFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.edit(Place.empty)
     }
 }
 
