@@ -15,6 +15,7 @@ import ru.netology.travel_in_russia_maps.databinding.FragmentListOfPlacesBinding
 import ru.netology.travel_in_russia_maps.dto.Place
 import ru.netology.travel_in_russia_maps.viewModel.PlaceViewModel
 
+
 class ListOfPlacesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +66,7 @@ class ListOfPlacesFragment : Fragment() {
 
         binding.list.adapter = adapter
 
+        viewModel.edit(Place.empty)
         viewModel.data.observe(viewLifecycleOwner) { state ->
             val listComparison = adapter.itemCount < state.places.size
             adapter.submitList(state.places) {

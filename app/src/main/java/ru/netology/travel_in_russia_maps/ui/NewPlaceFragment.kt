@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.travel_in_russia_maps.R
 import ru.netology.travel_in_russia_maps.databinding.FragmentNewPlaceBinding
-import ru.netology.travel_in_russia_maps.dto.Place
+
 
 import ru.netology.travel_in_russia_maps.viewModel.PlaceViewModel
 
@@ -91,10 +91,6 @@ class NewPlaceFragment : Fragment() {
         return binding.root
     }
 
-    override fun onStop() {
-        super.onStop()
-        viewModel.edit(Place.empty)
-    }
 }
 
 
